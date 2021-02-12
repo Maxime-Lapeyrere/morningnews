@@ -6,7 +6,7 @@ var ArticleSchema = mongoose.Schema({
   description: String,
   sourceid: String,
   sourcename: String,
-  img: String,
+  urlToImage: String,
   author:String,
 });
 

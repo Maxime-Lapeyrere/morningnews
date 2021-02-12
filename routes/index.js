@@ -5,6 +5,7 @@ var userModel = require('../models/users');
 var bcrypt = require('bcrypt');
 var uid2 = require('uid2');
 var articleModel = require('../models/articlesdb');
+const {populate} = require('../models/articlesdb')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -64,26 +65,36 @@ res.json({msg: error});
 })
 
 router.post('/add-wishlist', async function(req,res,next){
-  var newArticle = new articleModel({
+  var newArticle = await new articleModel({
     title: req.body.title,
      description: req.body.description,
-       img: req.body.img,
+     urlToImage: req.body.urlToImage,
         sourceid: req.body.sourceid,
           sourcename: req.body.sourcename,
         author: req.body.author 
 })
+ var articleSelect = await newArticle.save()
 try{
-  const SavedArticle = await newArticle.save()
-  res.json(SavedArticle);
+  var SavedArticle = await userModel.updateOne({token:req.body.token},{$push:{articlesdb:articleSelect._id}})
+  res.json(articleSelect);
 }catch(error) {
   res.json({msg: error});
 }
 } )
 
-router.delete('/delete-wishlist/:title', async function(req,res,next){
-
-    const removeWishedList = await articleModel.remove({title:req.params.title})
-    res.json(removeWishedList);
+router.post('/delete-wishlist', async function(req,res,next){
+console.log(req.body.title,'titre')
+console.log(req.body._id,'ID')
+  var delArticle = await userModel.updateOne({token:req.body.token},{$pull:{articlesdb:req.body._id}})
+    const removeWishedList = await articleModel.deleteOne({title:req.body.title})
+    res.json(removeWishedList, delArticle);
 })
+
+router.post('/displayArt', async function(req,res,next){
+  var userSelect = await userModel.findOne({token:req.body.token})
+  var articleSelect = await articleModel.find({_id: userSelect.articlesdb})
+  res.json(articleSelect)})
+
+
 
 module.exports = router;

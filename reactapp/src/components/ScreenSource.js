@@ -17,6 +17,20 @@ function ScreenSource(props) {
       
       setSourceList(jsonData.sources)
     }
+    async function displayArticles(){
+      console.log('coucou')
+      let display = await fetch('/displayArt',{
+        method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `token=${props.myToken}`
+      })
+      let responseArticle = await display.json()
+      // console.log('article a afficher ---->',responseArticle[0]._id)
+      
+      for(let i=0;i<responseArticle.length;i++){
+        props.addToWishList(responseArticle[i])}
+    }
+    displayArticles();
     loadSources()
   }, [country]);
   
@@ -66,7 +80,13 @@ function mapDispatchToProps(dispatch) {
         lang: lang
                           }) 
                           console.log(lang)
-    }
+    },
+    addToWishList: function(article) { 
+      dispatch( {type: 'addArticle',
+      articleLiked: article
+      }) 
+      console.log('coucou2',article)
+  },
   }
 }
 

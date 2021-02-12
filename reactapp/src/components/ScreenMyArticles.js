@@ -32,13 +32,20 @@ function ScreenMyArticles(props) {
     setVisible(false)
   }
 
+  
+console.log('article a supprimer',props.myArticles)
+
   var deletewishdb  = async (article) => {
-    let deleteArticlewishdb = await fetch(`/delete-wishlist/${article.title}`, {
-      method: "DELETE",
+console.log(article)
+    let deleteArticlewishdb = await fetch(`/delete-wishlist`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `title=${article.title}&_id=${article._id}&token=${props.myToken}`
       });
     let responsesaddwish = await deleteArticlewishdb.json()
   }
   
+  console.log(props.myArticles)
 
 
   if (props.myToken) {
@@ -127,6 +134,7 @@ function ScreenMyArticles(props) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    
     deleteFromWishList: function (article) {
       dispatch({ type: "deleteArticle", articleLiked: article });
       console.log(article);

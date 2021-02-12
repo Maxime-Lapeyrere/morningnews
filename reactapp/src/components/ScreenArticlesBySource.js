@@ -25,8 +25,11 @@ useEffect(() => {
     console.log("testtest", jsonDataSrc.articles);
     setArticlesList(jsonDataSrc.articles);
   }
+  
   loadSrc();
 }, []);
+
+
 
 var showModal = (title, content) => {
   setVisible(true)
@@ -48,9 +51,12 @@ var addwishdb  = async (article) => {
   let addArticlewishdb = await fetch("/add-wishlist", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `title=${article.title}&description=${article.description}&img=${article.urlToImage}&sourceid=${article.source.id}&sourcename=${article.source.name}&author=${article.author}`});
+    body: `title=${article.title}&description=${article.description}&urlToImage=${article.urlToImage}&sourceid=${article.source.id}&sourcename=${article.source.name}&author=${article.author}&token=${props.myToken}`});
   let responsesaddwish = await addArticlewishdb.json()
-}
+  
+  // for(let i=0;i<responsesaddwish.length;i++){
+    props.addToWishList(responsesaddwish)}
+// }
 
 
 if(props.myToken){
@@ -74,7 +80,7 @@ if(props.myToken){
               cover={<img alt={article.title} src={article.urlToImage} />}
               actions={[
                 <ReadOutlined type="read" key="ellipsis2" onClick={()=>{showModal(article.title, article.content)}}/>,
-                <LikeOutlined type="like" key="ellipsis" onClick={ ()=>{props.addToWishList(article);addwishdb(article)} }></LikeOutlined>,
+                <LikeOutlined type="like" key="ellipsis" onClick={ ()=>{addwishdb(article)} }></LikeOutlined>,
                 
               ]}
             >
