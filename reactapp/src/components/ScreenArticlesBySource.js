@@ -48,7 +48,7 @@ var addwishdb  = async (article) => {
   let addArticlewishdb = await fetch("/add-wishlist", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `titre=${article.title}&description=${article.description}&img=${article.urlToImage}&sourceid=${article.source.id}&sourcename=${article.source.name}&author=${article.author}`});
+    body: `title=${article.title}&description=${article.description}&img=${article.urlToImage}&sourceid=${article.source.id}&sourcename=${article.source.name}&author=${article.author}`});
   let responsesaddwish = await addArticlewishdb.json()
 }
 

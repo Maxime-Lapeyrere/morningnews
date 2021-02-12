@@ -33,11 +33,10 @@ function ScreenMyArticles(props) {
   }
 
   var deletewishdb  = async (article) => {
-    let addArticlewishdb = await fetch("/add-wishlist", {
+    let deleteArticlewishdb = await fetch(`/delete-wishlist/${article.title}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `titre=${article.title}&description=${article.description}&img=${article.urlToImage}&sourceid=${article.source.id}&sourcename=${article.source.name}&author=${article.author}`});
-    let responsesaddwish = await addArticlewishdb.json()
+      });
+    let responsesaddwish = await deleteArticlewishdb.json()
   }
   
 

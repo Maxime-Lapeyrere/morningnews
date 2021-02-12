@@ -80,30 +80,10 @@ try{
 }
 } )
 
-router.delete('/add-wishlist/:title', async function(req,res,next){
-  try{
+router.delete('/delete-wishlist/:title', async function(req,res,next){
+
     const removeWishedList = await articleModel.remove({title:req.params.title})
     res.json(removeWishedList);
-  }catch(error) {
-    res.json({msg: error});
-  }
- 
- 
- 
-  var newArticle = new articleModel({
-    title: req.body.title,
-     description: req.body.description,
-       img: req.body.img,
-        sourceid: req.body.sourceid,
-          sourcename: req.body.sourcename,
-        author: req.body.author 
 })
-try{
-  const SavedArticle = await newArticle.save()
-  res.json(SavedArticle);
-}catch(error) {
-  res.json({msg: error});
-}
-} )
 
 module.exports = router;
